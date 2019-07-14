@@ -1,0 +1,13 @@
+spring:
+  data:
+    mongodb:
+      host: testdb-a33jj.mongodb.net
+      username: myretail_user
+      password: Verizon123
+      database: myretail
+      authMechanism: SCRAM-SHA-1
+      retryWrites: true
+      w: majority
+
+redsky:
+  uri: https://redsky.target.com/v2/pdp/tcin/
