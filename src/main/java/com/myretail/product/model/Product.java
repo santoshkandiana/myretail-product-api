@@ -16,7 +16,7 @@ import org.mongodb.morphia.annotations.Id;
 public class Product {
 
     @Id
-    Long productId;
-    String productName;
-    Price price;
+    private Long productId;
+    private String productName;
+    private Price price;
 }

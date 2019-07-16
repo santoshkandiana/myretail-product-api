@@ -12,6 +12,6 @@ import lombok.*;
 public class ProductDescription {
 
   @JsonProperty("title")
-  public String title;
+  private String title;
 
 }

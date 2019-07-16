@@ -10,7 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 public class Price {
 
-  Double value;
-  String currencyCode;
+  private Double value;
+  private String currencyCode;
 
 }

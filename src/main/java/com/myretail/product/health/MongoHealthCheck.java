@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MongoHealthCheck implements HealthIndicator {
 
-  Datastore datastore;
+  private Datastore datastore;
 
   @Autowired
   public MongoHealthCheck (Datastore datastore){

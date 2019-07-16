@@ -13,7 +13,7 @@ import lombok.*;
 public class RedSkyProductDetails {
 
   @JsonProperty("product")
-  public Product product;
+  private Product product;
 
 
 }
