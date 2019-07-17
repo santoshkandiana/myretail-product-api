@@ -14,11 +14,5 @@ import org.junit.runner.RunWith;
 )
 public class MyretailProductApiApplicationTests {
 
-	/*
-	 Just to load context
-	 */
-	@Test
-	public void contextLoads() {
-	}
 
 }
