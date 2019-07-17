@@ -1,7 +1,6 @@
 package com.myretail.product.stepdef;
 
 import com.myretail.product.MyretailProductApiApplication;
-import com.myretail.product.MyretailProductApiApplicationTests;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.test.context.SpringBootContextLoader;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,7 +1,6 @@
 package com.myretail.product.stepdef;
 
 import com.myretail.product.MyretailProductApiApplication;
-import com.myretail.product.MyretailProductApiApplicationTests;
 import com.myretail.product.model.Price;
 import com.myretail.product.model.Product;
 import com.myretail.product.model.ProductGetResponse;

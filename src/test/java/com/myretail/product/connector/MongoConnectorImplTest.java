@@ -99,7 +99,7 @@ public class MongoConnectorImplTest {
     when(updateResults.getUpdatedCount()).thenReturn(0);
 
 
-   Product actualProduct = mongoConnectorImpl.updateProductPrice(updatedProduct);
+    mongoConnectorImpl.updateProductPrice(updatedProduct);
 
   }
 

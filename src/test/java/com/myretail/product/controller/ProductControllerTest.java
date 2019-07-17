@@ -29,6 +29,9 @@ public class ProductControllerTest {
 
   private ObjectMapper objectMapper;
 
+  private String uri;
+
+
   @Before
   public void setUp(){
     initMocks(this);
@@ -36,6 +39,7 @@ public class ProductControllerTest {
     this.mockMvc = standaloneSetup(new ProductController(productService))
                      .setControllerAdvice(new RestControllerAdvise())
                      .build();
+    uri = "/myretail/v1/products/";
   }
 
 
@@ -61,7 +65,7 @@ public class ProductControllerTest {
 
     //Act
     MvcResult mvcResult = mockMvc.perform(
-         get("/myretail/v1/products/"+productId))
+         get(uri +productId))
         .andExpect(status().isOk())
         .andReturn();
 
@@ -84,7 +88,7 @@ public class ProductControllerTest {
 
     //Act
     mockMvc.perform(
-        post("/myretail/v1/products/")
+        post(uri)
           .content(objectMapper.writeValueAsString(product))
           .contentType(MediaType.APPLICATION_JSON)
         )
@@ -117,7 +121,7 @@ public class ProductControllerTest {
 
     //Act
     MvcResult mvcResult=mockMvc.perform(
-        put("/myretail/v1/products/"+productId)
+        put(uri+productId)
             .content(objectMapper.writeValueAsString(price))
             .contentType(MediaType.APPLICATION_JSON)
     )

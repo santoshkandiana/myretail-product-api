@@ -3,6 +3,7 @@ package com.myretail.product.stepdef;
 import com.myretail.product.model.Price;
 import com.myretail.product.model.Product;
 import com.myretail.product.model.ProductPutResponse;
+import com.myretail.product.model.ReturnDetails;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
@@ -88,19 +89,29 @@ public class PutProductDetailsStepDef extends AbstractStepDef {
   @Given("^for a productId which does not exist for put operation$")
   public void forAProductIdWhichDoesNotExistForPutOperation() {
 
+    if(datastore.find(Product.class).field("productId").equal(product.getProductId()).get()!=null){
+      Assert.fail("Product ID exists , Fail the scenario");
+    }
+
   }
 
   @Then("^the client receives status code of NOT FOUND for put operation$")
   public void theClientReceivesStatusCodeOfNOTFOUNDForPutOperation() {
+    Assert.assertEquals(HttpStatus.NOT_FOUND,responseEntity.getStatusCode());
 
   }
 
-  @Given("^for a invalid request$")
-  public void forAInvalidRequest() {
+  @And("^the client receives response with no product details and failure response metadata for update$")
+  public void theClientReceivesResponseWithNoProductDetailsAndFailureResponseMetadata() {
+    Assert.assertNull(responseEntity.getBody().getProduct());
+    Assert.assertEquals(ReturnDetails
+            .builder()
+            .code(404)
+            .message("Update operation failed as product Id doesn't exist")
+            .source("myretail-product-api")
+            .build().toString()
+        ,responseEntity.getBody().getReturnDetails().toString());
 
   }
 
-  @Then("^the client receives status code of BAD request$")
-  public void theClientReceivesStatusCodeOfBADRequest() {
-  }
 }

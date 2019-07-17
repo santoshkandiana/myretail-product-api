@@ -15,6 +15,8 @@ public class MongoConnectorImpl implements MongoConnector {
 
   private Datastore datastore;
 
+  private static final String PRODUCT_ID = "productId";
+
   @Autowired
   public  MongoConnectorImpl(Datastore datastore){
     this.datastore=datastore;
@@ -24,7 +26,7 @@ public class MongoConnectorImpl implements MongoConnector {
   public Product retrieveProductDetails (Long productId) {
     Product product = datastore
                          .find(Product.class)
-                         .filter("productId",productId)
+                         .filter(PRODUCT_ID,productId)
                          .get();
     if(ObjectUtils.isEmpty(product)){
       throw new RecordNotFoundException("Product Not found for the given productId");
@@ -43,10 +45,10 @@ public class MongoConnectorImpl implements MongoConnector {
 
     Query<Product> productQuery = this.datastore.createQuery(Product.class);
 
-    productQuery.criteria("productId").equal(productToBeUpdated.getProductId());
+    productQuery.criteria(PRODUCT_ID).equal(productToBeUpdated.getProductId());
     UpdateOperations<Product> ops = this.datastore.createUpdateOperations(Product.class)
                                           .set("price",productToBeUpdated.getPrice())
-                                          .set("productId",productToBeUpdated.getProductId());
+                                          .set(PRODUCT_ID,productToBeUpdated.getProductId());
     UpdateResults updateResults = this.datastore.update(productQuery,ops);
     if(updateResults.getUpdatedCount()==0){
       throw new RecordNotFoundException("Update operation failed as product Id doesn't exist");
