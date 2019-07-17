@@ -59,15 +59,16 @@ public class ProductController {
     })
 
     @PutMapping(value = "/products/{productId}")
-    public ProductPutResponse updateProduct(@Validated  @RequestBody Product product ,
+    public ProductPutResponse updateProduct(@RequestBody Price price ,
                                             @PathVariable Long productId){
 
+
         return ProductPutResponse.builder()
-            .product(productService.updateProductPrice(product))
+            .product(productService.updateProductPrice(Product.builder().productId(productId).price(price).build()))
             .returnDetails(ReturnDetails
                 .builder()
                 .code(0)
-                .message("Retrieve Successful")
+                .message("Update Successful")
                 .source("myretail-product-api")
                 .build())
             .build();

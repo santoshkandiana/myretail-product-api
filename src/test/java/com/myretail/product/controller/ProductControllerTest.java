@@ -2,10 +2,7 @@ package com.myretail.product.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.myretail.product.exception.RestControllerAdvise;
-import com.myretail.product.model.Price;
-import com.myretail.product.model.Product;
-import com.myretail.product.model.ProductGetResponse;
-import com.myretail.product.model.ReturnDetails;
+import com.myretail.product.model.*;
 import com.myretail.product.service.ProductService;
 import org.junit.Before;
 import org.junit.Test;
@@ -101,17 +98,27 @@ public class ProductControllerTest {
   @Test
   public void testUpdateProductSuccess() throws Exception {
 
-    Product product = Product.builder()
+    Price price = Price.builder().value(13.49).currencyCode("USD").build();
+
+    Product expectedProduct = Product.builder()
         .productId(productId)
-        .price(Price.builder().value(13.49).currencyCode("USD").build())
+        .price(Price.builder().value(26.49).currencyCode("USD").build())
         .build();
 
-    doNothing().when(productService).updateProductPrice(product);
+    ProductPutResponse expectedProductPutResponse = ProductPutResponse.builder()
+        .product(expectedProduct)
+        .returnDetails(ReturnDetails.builder()
+            .code(0)
+            .message("Update Successful")
+            .source("myretail-product-api").build())
+        .build();
+
+    when(productService.updateProductPrice(any())).thenReturn(expectedProduct);
 
     //Act
-    mockMvc.perform(
+    MvcResult mvcResult=mockMvc.perform(
         put("/myretail/v1/products/"+productId)
-            .content(objectMapper.writeValueAsString(product))
+            .content(objectMapper.writeValueAsString(price))
             .contentType(MediaType.APPLICATION_JSON)
     )
         .andExpect(status().isOk())
@@ -119,5 +126,8 @@ public class ProductControllerTest {
 
     //Assert
     verify(productService, times(1)).updateProductPrice(any());
+    ProductPutResponse actualResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), ProductPutResponse.class);
+    //Assert
+    assertEquals(expectedProductPutResponse.toString(),actualResponse.toString());
   }
 }

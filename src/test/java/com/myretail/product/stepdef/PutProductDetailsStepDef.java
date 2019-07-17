@@ -20,7 +20,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-public class PutProductDetailsStepDef {
+public class PutProductDetailsStepDef extends AbstractStepDef {
 
   @Autowired
   private Datastore datastore;
@@ -63,7 +63,7 @@ public class PutProductDetailsStepDef {
   @When("^the client invokes putProductAPI$")
   public void theClientInvokesPutProductAPI() {
     String url= "http://localhost:" + port + "/myretail/v1/products/"+product.getProductId();
-    HttpEntity httpEntity =  new HttpEntity(productInRequest);
+    HttpEntity httpEntity =  new HttpEntity(productInRequest.getPrice());
     responseEntity = testRestTemplate.exchange(url, HttpMethod.PUT,httpEntity,ProductPutResponse.class);
 
   }
