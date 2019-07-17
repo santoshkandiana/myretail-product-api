@@ -30,6 +30,11 @@ public class ProductService {
   }
 
   public void saveProduct(Product product) {
-    mongoAdaptor.saveProduct(product);
+     mongoAdaptor.saveProduct(product);
+  }
+
+  public Product updateProductPrice(Product product) {
+      return mongoAdaptor.updateProductPrice(product);
+
   }
 }

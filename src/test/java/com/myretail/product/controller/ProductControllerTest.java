@@ -17,8 +17,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
@@ -97,5 +96,28 @@ public class ProductControllerTest {
 
     //Assert
     verify(productService, times(1)).saveProduct(any());
+  }
+
+  @Test
+  public void testUpdateProductSuccess() throws Exception {
+
+    Product product = Product.builder()
+        .productId(productId)
+        .price(Price.builder().value(13.49).currencyCode("USD").build())
+        .build();
+
+    doNothing().when(productService).updateProductPrice(product);
+
+    //Act
+    mockMvc.perform(
+        put("/myretail/v1/products/"+productId)
+            .content(objectMapper.writeValueAsString(product))
+            .contentType(MediaType.APPLICATION_JSON)
+    )
+        .andExpect(status().isOk())
+        .andReturn();
+
+    //Assert
+    verify(productService, times(1)).updateProductPrice(any());
   }
 }

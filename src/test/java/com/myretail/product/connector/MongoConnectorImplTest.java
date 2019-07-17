@@ -9,6 +9,8 @@ import org.mockito.Mock;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.query.FieldEnd;
 import org.mongodb.morphia.query.Query;
+import org.mongodb.morphia.query.UpdateOperations;
+import org.mongodb.morphia.query.UpdateResults;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -75,6 +77,53 @@ public class MongoConnectorImplTest {
     when(datastore.save(product)).thenReturn(null);
     mongoConnectorImpl.saveProduct(product);
     verify(datastore, times(1)).save(product);
+
+
+  }
+
+  @Test(expected = RecordNotFoundException.class)
+  public void updateProductPriceNoProductIdPresent() {
+
+    Product updatedProduct = Product.builder().productId(productId)
+        .price(Price.builder().value(13.49).currencyCode("USD").build()).build();
+
+    UpdateOperations<Product> productUpdateOperations = mock(UpdateOperations.class);
+    UpdateResults updateResults = mock(UpdateResults.class);
+    when(datastore.createQuery(Product.class)).thenReturn(query);
+    when(query.criteria("productId")).thenReturn(fieldEnd);
+    when(fieldEnd.equal(updatedProduct.getProductId())).thenReturn(fieldEnd);
+
+    when(datastore.createUpdateOperations(Product.class)).thenReturn(productUpdateOperations);
+    when(productUpdateOperations.set(any(),any())).thenReturn(productUpdateOperations);
+    when(datastore.update(query,productUpdateOperations)).thenReturn(updateResults);
+    when(updateResults.getUpdatedCount()).thenReturn(0);
+
+
+   Product actualProduct = mongoConnectorImpl.updateProductPrice(updatedProduct);
+
+  }
+
+  @Test
+  public void updateProductPricePoductIdPresent() {
+
+    Product updatedProduct = Product.builder().productId(productId)
+        .price(Price.builder().value(13.49).currencyCode("USD").build()).build();
+
+    UpdateOperations<Product> productUpdateOperations = mock(UpdateOperations.class);
+    UpdateResults updateResults = mock(UpdateResults.class);
+    when(datastore.createQuery(Product.class)).thenReturn(query);
+    when(query.criteria("productId")).thenReturn(fieldEnd);
+    when(fieldEnd.equal(updatedProduct.getProductId())).thenReturn(fieldEnd);
+
+    when(datastore.createUpdateOperations(Product.class)).thenReturn(productUpdateOperations);
+    when(productUpdateOperations.set(any(),any())).thenReturn(productUpdateOperations);
+    when(datastore.update(query,productUpdateOperations)).thenReturn(updateResults);
+    when(updateResults.getUpdatedCount()).thenReturn(1);
+
+
+    Product actualProduct = mongoConnectorImpl.updateProductPrice(updatedProduct);
+
+    assertEquals(updatedProduct,actualProduct);
 
 
   }

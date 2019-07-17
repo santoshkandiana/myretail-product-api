@@ -19,11 +19,15 @@ public class MongoAdaptorTest {
   Long productId;
 
   private Product product;
+  private Product expectedProduct;
+
 
 
   @Before
   public void setUp(){
     initMocks(this);
+    expectedProduct = Product.builder().productId(productId)
+        .price(Price.builder().value(13.49).currencyCode("USD").build()).build();
   }
 
   @Test
@@ -49,7 +53,19 @@ public class MongoAdaptorTest {
     doNothing().when(mongoConnector).saveProduct(product);
     mongoConnector.saveProduct(product);
     verify(mongoConnector, times(1)).saveProduct(product);
+  }
 
+  @Test
+  public void testUpdateProductPrice() {
+
+    product = Product.builder().productId(productId)
+        .price(Price.builder().value(26.49).currencyCode("USD").build()).build();
+
+
+    when(mongoConnector.updateProductPrice(product)).thenReturn(expectedProduct);
+    Product actualProduct = mongoConnector.updateProductPrice(product);
+    verify(mongoConnector, times(1)).updateProductPrice(product);
+    assertEquals(expectedProduct,actualProduct);
 
   }
 }

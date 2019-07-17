@@ -1,13 +1,12 @@
 package com.myretail.product.controller;
 
-import com.myretail.product.model.Product;
-import com.myretail.product.model.ProductGetResponse;
-import com.myretail.product.model.ReturnDetails;
+import com.myretail.product.model.*;
 import com.myretail.product.service.ProductService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -30,7 +29,7 @@ public class ProductController {
         @ApiResponse(code=200, message = "retrieve successful"),
         @ApiResponse(code=400, message = "bad request"),
         @ApiResponse(code=404, message = "Product Name does not exist in redsky"),
-        @ApiResponse(code=400, message = "Product Not found for the given productId"),
+        @ApiResponse(code=404, message = "Product Not found for the given productId"),
 
     })
     @GetMapping(value = "/products/{productId}")
@@ -47,17 +46,48 @@ public class ProductController {
                      .build();
     }
 
+
     @ApiOperation(
-        value = "POST Product Details",
-        notes = "POst a product to database"
+        value = "PUT Product Details",
+        notes = "Update  product price details to database"
     )
     @ApiResponses({
         @ApiResponse(code=200, message = "Post successful"),
         @ApiResponse(code=400, message = "bad request"),
+        @ApiResponse(code=404, message = "Product Not found for the given productId"),
+
+    })
+
+    @PutMapping(value = "/products/{productId}")
+    public ProductPutResponse updateProduct(@Validated  @RequestBody Product product ,
+                                            @PathVariable Long productId){
+
+        return ProductPutResponse.builder()
+            .product(productService.updateProductPrice(product))
+            .returnDetails(ReturnDetails
+                .builder()
+                .code(0)
+                .message("Retrieve Successful")
+                .source("myretail-product-api")
+                .build())
+            .build();
+
+    }
+
+
+    @ApiOperation(
+        value = "POST Product Details",
+        notes = "Post a product to database"
+    )
+    @ApiResponses({
+        @ApiResponse(code=200, message = "Post successful"),
+        @ApiResponse(code=400, message = "bad request")
     })
     @PostMapping(value = "/products")
-    public void saveProduct(@RequestBody Product product){
-         productService.saveProduct(product);
+    public void saveProduct(@RequestBody Product product ){
+
+        productService.saveProduct(product);
+
     }
 
 

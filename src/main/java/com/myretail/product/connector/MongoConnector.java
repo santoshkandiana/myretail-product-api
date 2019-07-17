@@ -8,4 +8,6 @@ public interface MongoConnector {
   Product retrieveProductDetails(Long productId);
 
   void saveProduct(Product product);
+
+  Product updateProductPrice(Product product);
 }

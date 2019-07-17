@@ -60,4 +60,18 @@ public class ProductServiceTest {
     verify(mongoAdaptor, times(1)).saveProduct(expectedProduct);
 
   }
+
+  @Test
+  public void testUpdateProduct() {
+
+    Price expectedPrice = Price.builder().value(13.49).currencyCode("USD").build();
+    when(mongoAdaptor.updateProductPrice(any())).thenReturn(expectedProduct);
+    productService.updateProductPrice(expectedProduct);
+    verify(mongoAdaptor, times(1)).updateProductPrice(any());
+    assertEquals(expectedPrice.toString() , expectedProduct.getPrice().toString());
+
+
+  }
+
+
 }

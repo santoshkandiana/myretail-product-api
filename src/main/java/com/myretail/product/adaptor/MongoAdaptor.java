@@ -19,6 +19,10 @@ public class MongoAdaptor {
   }
 
   public void saveProduct(Product product) {
-    mongoConnector.saveProduct(product);
+     mongoConnector.saveProduct(product);
+  }
+
+  public Product updateProductPrice(Product product) {
+    return mongoConnector.updateProductPrice(product);
   }
 }
