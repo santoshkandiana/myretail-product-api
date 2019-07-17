@@ -1,5 +1,6 @@
 package com.myretail.product.stepdef;
 
+import com.myretail.product.MyretailProductApiApplication;
 import com.myretail.product.MyretailProductApiApplicationTests;
 import com.myretail.product.model.Price;
 import com.myretail.product.model.Product;
@@ -26,7 +27,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 
-@ContextConfiguration(classes = MyretailProductApiApplicationTests.class, loader = SpringBootContextLoader.class)
+@ContextConfiguration(classes = MyretailProductApiApplication.class, loader = SpringBootContextLoader.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("ci")
 @Slf4j
