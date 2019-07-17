@@ -22,7 +22,7 @@ public class MongoHealthCheck implements HealthIndicator {
       return Health.down()
           .withDetail("Error Code", 404).build();
     }
-    return Health.up().build();
+    return Health.up().withDetail("Mongo Database is Up",200).build();
   }
 
   public Boolean check() {
