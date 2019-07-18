@@ -37,6 +37,12 @@ Please refer swagger documentation
 ##Code Quality checks
 Ran sonarlint for quality check, could not run veracode due to licesnse issues
 
+##Workspace Setup
 
+Please checkout master branch in your favorite editor
+This code is tested with Java 8 and Intellij
+set up graddle setting to graddle wrapper if local machiene does not have gradle
+Right click on MyretailProductApiApplication and click on run to bootstrap the spring boot application
+ 
  
  
