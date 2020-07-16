@@ -2,6 +2,7 @@ package com.myretail.product.controller;
 
 import com.myretail.product.model.*;
 import com.myretail.product.service.ProductService;
+import com.myretail.product.validation.ValidationUtil;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -13,10 +14,13 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
 
     private ProductService productService;
+    private ValidationUtil validationUtil;
 
     @Autowired
-    public ProductController(ProductService productService){
+    public ProductController(ProductService productService , ValidationUtil validationUtil){
+
         this.productService = productService;
+        this.validationUtil = validationUtil;
     }
 
     @ApiOperation(
@@ -33,6 +37,8 @@ public class ProductController {
     })
     @GetMapping(value = "/products/{productId}")
     public ProductGetResponse getProduct(@PathVariable Long productId){
+        //
+        validationUtil.validate(productId);
         return ProductGetResponse
                      .builder()
                      .product(productService.getProduct(productId))
